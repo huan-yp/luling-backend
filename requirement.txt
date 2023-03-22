@@ -1,0 +1,6 @@
+pyyaml
+jiagu
+numpy
+pymysql
+requests
+tiktoken

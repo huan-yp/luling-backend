@@ -1,0 +1,15 @@
+[
+  {
+    role: system,
+    # content: ./data/example/system_message.txt, # 可以写路径
+    content: You're a helpful assistant
+  },
+  {
+    role: user,
+    content: hi!
+  },
+  {
+    role: assistant,
+    content: "./data/example/example_message.txt"
+  }
+]

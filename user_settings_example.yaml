@@ -1,0 +1,28 @@
+language_model: chatgpt # 语言模型名
+qq: "123456" # 机器人 qq
+name: "assistant" # AI 昵称
+host: "127.0.0.1" # 服务器 IP, 默认为本机
+port: 1145 # 监听端口
+chatgpt:
+  model: gpt-3.5-turbo-0301 # 模型
+  temperature: 0.7 # 温度
+  api_key: your api key
+  max_tokens: 512 # 最大回复 token
+  prompt_token_limit: 2560 # 最大请求 token, 该参数用来限制记忆库导出的 prompt 长度
+  fold_token_limit: 160 # 超过这个限制的回复将会被折叠, 只保留前缀
+  message_expire: 480 # 最近消息阈值(s)
+  organization: null # openai 组织, 为 null 则没有
+  timeout: 15 # 超时限制
+  retry_timeout: 50 # 重试超时限制
+  preset_message_path: ./data/example/message_template.yaml # 预设消息路径
+database:
+  host: localhost # mysql 服务 IP 地址
+  port: 3306 # mysql 服务端口
+  user: root # 登录账户名
+  password: your password # 登录密码
+  database: your database # 数据库名
+  table: your table # 记忆库表名
+proxy:
+  enable: true # 是否启用代理
+  host: "http://127.0.0.1" # 代理地址
+  port: "7890" # 代理端口
