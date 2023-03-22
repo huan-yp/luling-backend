@@ -7,8 +7,8 @@
 ### 配置
 将 `user_settings_example.yaml` 复制一份，重命名为 `user_settings.yaml`，并在里面填写自己的配置信息。
 
-AI 本身相关的配置
+AI 本身相关的配置在 `user_settings_example.yaml` 里都有注释，可以参照 `./data/example` 下的文件写
 ### 使用
 
-建议使用本项目对应的前端
+建议使用本项目对应的前端，如有需求也可以自行编写前端，可以参考 `./documentation` 中的文档编写前端。 
 

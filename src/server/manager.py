@@ -160,7 +160,7 @@ class CommandProcessor():
         if command == "show":
             if len(args) < 2:
                 return "Incorrect command format. 'show [key] [optional]'"
-            return self.show(user=user, key=args[1], **args[2:])
+            return self.show(user=user, key=args[1], *args[2:])
         if command == "clear_context":
             if len(args) != 1:
                 return "Incorrect command format. 'clear_context'"
@@ -203,8 +203,8 @@ class CommandProcessor():
     @authorization_decorator(level=10)
     def clear_context(self, user):
         if isinstance(self.bot, ChatGPTBot):
-            self.bot.clear_context()
-            return f"Context cleared"
+            # self.bot.clear_context()
+            return f"Unsupported Command"
         return f"Only ChatGPT Bot Has This Operation"
     
     @authorization_decorator(level=10)
@@ -223,7 +223,7 @@ class CommandProcessor():
         if key == "access":
             return str(G.access_processor.__dict__)
         if key == "statu":
-            return f"SERVER_DEBUG:{C.SERVER_DEBUG}\nPREFIX_NAME:{C.PREFIX_NAME}"
+            return f"SERVER_DEBUG:{G.SERVER_DEBUG}\nPREFIX_NAME:{G.PREFIX_NAME}"
         if key == "log":
             return "No Supported Yet, Coming Soon"    
         return f"No such key {key} for show command"

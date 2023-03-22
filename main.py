@@ -15,6 +15,7 @@ def load_config(path):
         G.name = G.config["name"]
         G.port = G.config["port"]
         G.host = G.config["host"]
+        G.__dict__.update(G.config["global_attributes_defaults"])
 
 
 def config_env():

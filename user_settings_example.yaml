@@ -3,6 +3,10 @@ qq: "123456" # 机器人 qq
 name: "assistant" # AI 昵称
 host: "127.0.0.1" # 服务器 IP, 默认为本机
 port: 1145 # 监听端口
+note_message_path: ./data/example/note_message.yaml # 提示信息配置
+global_attributes_defaults: # 全局变量默认值
+  SERVER_DEBUG: false
+  PREFIX_NAME: true
 chatgpt:
   model: gpt-3.5-turbo-0301 # 模型
   temperature: 0.7 # 温度

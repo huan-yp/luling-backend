@@ -24,7 +24,7 @@ from logging import INFO, ERROR
 from json import loads, dumps, load
 
 from server.manager import AccessProcessor, MainProcessor
-
+from utils.tools import yaml2dict
 from language_model.chatgpt_api import ChatGPTConfig, ChatGPTBot
 from constants import C
 from global_attributes import G
@@ -87,6 +87,12 @@ def get_response(request:Message) -> Message:
         logger.log(INFO, "request_overview:" + str(request))
         logger.log(INFO, "request_content:" + request.content)
         reply = G.main_processor.process(request)
+        if isinstance(reply, str):
+            reply = Message({
+                "content": reply,
+                "sender": G.qq,
+                "group": request.group
+            })
         return reply
     except (Exception, BaseException) as e:
         logger.log(ERROR, traceback.format_exc())
@@ -117,9 +123,15 @@ def load_class():
     G.main_processor.set_bot(ChatGPTBot("鹿灵"))
 
 
+def load_note_messages():
+    dict = yaml2dict(G.config["note_message_path"])
+    C.__dict__.update(dict)
+
+
 def main():
     set_language_model()
     set_database()
+    load_note_messages()
     load_class()
     server = socketserver.ThreadingTCPServer((G.host, G.port), MyServer)
     logger.log(INFO, "Server Start")

@@ -1,0 +1,8 @@
+HELP_INFO: "AI 使用指北:\n\
+            1. AI 所有生成内容均为虚构。\n\
+            2. 请勿谈论政治和色情话题。\n"
+ONLINE_MESSAGE: "AI 已经上线" # AI 上线成功的回复
+
+OFFLINE_MESSAGE: "AI 已经下线" # AI 下线成功的回复
+
+OFFLINE_NOTE: "AI 已经下线" # AI 下线时请求的返回信息

@@ -37,8 +37,14 @@ class Bot():
     def chat(self, message):
         """对话函数接口
         """
+        def with_at(message):
+            return f"@{G.qq}" in message.content
+        
+        if (not G.bot_online or G.SERVER_DEBUG) and not with_at(message):
+            return None
+            
         if not G.bot_online:
-            return C.OFFLINE_MESSAGE
+            return C.OFFLINE_NOTE
         
         self.lock.acquire()
         if not self.statu:
@@ -47,15 +53,13 @@ class Bot():
         self.statu = False
         self.lock.release()
         
-        if C.SERVER_DEBUG:
+        if G.SERVER_DEBUG:
             time.sleep(10)
-            return """
-                Test Message:
-                first line: "\\'
-                
-                second line: 😊
-                Test Ok
-            """
+            return "Test Message:\n\
+            first line: \"\\' \n\n\
+            second line: 😊 \n\
+            Test Ok \
+            "
             
         msg = self._chat(message)
         self.lock.acquire()
