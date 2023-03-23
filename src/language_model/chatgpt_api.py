@@ -137,7 +137,7 @@ class ChatGPTBot(Bot):
         
         def process_message(message:Message):
             while num_tokens_from_text(message.content) > G.chatgpt_config.fold_token_limit:
-                message.content = message.content[:len(message.content) / 2]
+                message.content = message.content[:len(message.content) // 2]
                 message.content += "..."
         
         def get_reply(message:Message) -> Message:
@@ -158,7 +158,7 @@ class ChatGPTBot(Bot):
         tl1, tl2, tl3, limit = 0, 0, 0, G.chatgpt_config.prompt_token_limit // 3
         for msg in related_messages:
             msg_time = get_timestamp_from_string(msg.date)
-            if  (timenow - msg_time > G.chatgpt_config.message_expire and tl1 < limit) or \
+            if  (timenow - msg_time < G.chatgpt_config.message_expire and tl1 < limit) or \
                 (tl2 + num_tokens_from_message(msg) < limit and msg.reply > 0) or \
                 (tl3 + num_tokens_from_message(msg) < limit and msg.sender == message.sender and msg.reply > 0): 
                 
@@ -167,6 +167,7 @@ class ChatGPTBot(Bot):
                 if msg.reply != 0:
                     try:
                         nmsg = get_reply(msg)
+                        process_message(msg)
                         final_messages.append(nmsg)
                         tokens += num_tokens_from_message(nmsg)
                     except (Exception, BaseException) as e:
@@ -174,19 +175,19 @@ class ChatGPTBot(Bot):
                         logger.info("see log for details")
                         logger.debug(traceback.format_exc())
                     
-                if timenow - msg_time > G.chatgpt_config.message_expire and tl1 < limit:
+                if (timenow - msg_time < G.chatgpt_config.message_expire and tl1 < limit):
                     tl1 += tokens
-                elif tl2 < limit:
+                elif (tl2 + num_tokens_from_message(msg) < limit and msg.reply > 0):
                     tl2 += tokens
-                elif tl3 < limit:
+                elif (tl3 + num_tokens_from_message(msg) < limit and msg.sender == message.sender and msg.reply > 0):
                     tl3 += tokens
                     
         final_messages = sorted(final_messages)
         time_inserted = False
-        message_list = []
+        message_list = [] + preset_messages
         for msg in final_messages:
             self.process_message(msg)
-            if timenow - get_timestamp_from_string(msg.date) and time_inserted == False:
+            if timenow - get_timestamp_from_string(msg.date) < G.chatgpt_config.message_expire and time_inserted == False:
                 message_list.append({
                     "role":"system",
                     "content": f"""Message Above is before {msg.date}.\nMessage Below are recent messages."""
@@ -208,10 +209,11 @@ class ChatGPTBot(Bot):
                     })
         
         this_user_messages = [
-            {"role":"system", "content":f"Time:{message.date}"},
+            {"role":"system", "content":f"Time:{message.date}."},
+            # {"role":"system", "content":f"Time:{message.date}.\n请注意，你不是 AI 助手，不应该询问对方是否需要帮助"},
             {"role":"user", "content":message.content},
         ]
-        return preset_messages + message_list + this_user_messages
+        return message_list + this_user_messages
     
     def process_message(self, message:Message) -> bool:
         """处理消息, 判断消息是否应该被发送给语言模型, 会改变 message 的 content

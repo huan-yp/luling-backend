@@ -6,7 +6,7 @@ from logging import INFO, ERROR, DEBUG
 
 
 def make_log_path(path):
-    os.mkdir(os.path.dirname(path))
+    os.makedirs(os.path.dirname(path))
     with open(console_log_path, "w+") as f:
         f.write(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + '\n')
         

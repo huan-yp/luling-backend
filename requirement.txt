@@ -4,3 +4,4 @@ numpy
 pymysql
 requests
 tiktoken
+openai
