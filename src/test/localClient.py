@@ -1,8 +1,10 @@
 import os
 import sys
 
-os.chdir(os.path.dirname(__file__))
-sys.path.append(os.path.join(os.getcwd(), "src"))
+from os.path import dirname
+
+os.chdir(dirname(dirname(__file__)))
+sys.path.append(os.path.join(os.getcwd()))
 
 from json import dumps, loads
 from utils.tools import yaml2dict
