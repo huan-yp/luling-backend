@@ -98,7 +98,21 @@
    
    其它部分全部封装好了， 只需要看登录。 **mirai 登录是本项目最大门槛。**
 
+   记得给 `mcl` 开权限:
+   ```shell
+   chmod 777 /home/luling-frontend/mcl
+   ```
+
 8. 正式启动
+    ```shell
+    cd /home/luling-frontend
+    ./mcl &
+    cd /
+    python3 /home/luling-backend/main.py &
+    /home/clash/clash &
+    ```
+
+#### 补充
 
 #### 手动配置
 
@@ -125,4 +139,5 @@ create table if not exists main(
 - 尝试计算感情倾向引导词语。
 - 支持 GPT4 以及多媒体。
 - 降低硬件要求。
+- 做一个自动配置脚本防止劝退。
 
