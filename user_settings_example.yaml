@@ -23,9 +23,9 @@ database:
   host: localhost # mysql 服务 IP 地址
   port: 3306 # mysql 服务端口
   user: root # 登录账户名
-  password: your password # 登录密码
-  database: your database # 数据库名
-  table: your table # 记忆库表名
+  password: 123456 # 登录密码
+  database: aimemory # 数据库名
+  table: main # 记忆库表名
 proxy:
   enable: true # 是否启用代理
   host: "http://127.0.0.1" # 代理地址
