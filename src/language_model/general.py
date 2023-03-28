@@ -60,10 +60,16 @@ class Bot():
             second line: 😊 \n\
             Test Ok \
             "
-            
-        msg = self._chat(message)
-        self.lock.acquire()
-        self.statu = True
-        self.lock.release()
-        return msg
+        try:
+            msg = self._chat(message)
+        except BaseException as e:
+            self.lock.acquire()
+            self.statu = True
+            self.lock.release()
+            raise e
+        else:
+            self.lock.acquire()
+            self.statu = True
+            self.lock.release()
+            return msg
     

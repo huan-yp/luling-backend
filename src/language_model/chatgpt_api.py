@@ -98,6 +98,7 @@ class ChatGPTBot(Bot):
             str: 表示回复
         """
         try:
+            logger.debug("start request")
             start_time = time.time()
             if retry:
                 timeout = G.chatgpt_config.timeout
@@ -117,13 +118,13 @@ class ChatGPTBot(Bot):
             if(retry):
                 logger.log(WARNING, "Request Failed, see log for stack details")
                 logger.log(WARNING, e)
-                logger.debug(traceback.format_exc())
+                logger.debug(traceback.format_exc() + "\n--------------------------\n")
                 time.sleep(3)
                 return self.request(messages, t, max_tokens, retry=False)
             else:
                 logger.log(ERROR, "Request Failed, see log for stack details")
                 logger.log(ERROR, e)
-                logger.log(DEBUG, traceback.format_exc())
+                logger.log(DEBUG, traceback.format_exc()  + "\n--------------------------\n")
                 raise RequestError("GPT3.5 Request Failed")
             
         choice = response["choices"][0]
@@ -144,6 +145,7 @@ class ChatGPTBot(Bot):
             return G.db.get_message_by_id(message.reply)
         
         preset_messages = G.chatgpt_config.preset_message
+        logger.debug("searhing messages")
         related_messages = G.db.search_related(message)
         final_messages = []
         for msg in related_messages:
@@ -181,7 +183,8 @@ class ChatGPTBot(Bot):
                     tl2 += tokens
                 elif (tl3 + num_tokens_from_message(msg) < limit and msg.sender == message.sender and msg.reply > 0):
                     tl3 += tokens
-                    
+        
+        logger.debug("Building Request Messages")            
         final_messages = sorted(final_messages)
         time_inserted = False
         message_list = [] + preset_messages
@@ -240,7 +243,9 @@ class ChatGPTBot(Bot):
         if statu == False:
             return None
         
+        logger.debug("Building Related Messages")
         request_messages = self.build_related_message(message)
+        logger.debug("Getting Max tokens")
         max_token = self.get_max_token(message)
         temperature = self.get_temperature(message)
         logger.log(DEBUG, request_messages)

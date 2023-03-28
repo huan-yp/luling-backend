@@ -1,7 +1,10 @@
 
 import yaml
 import os
+import sys
 import openai
+
+sys.path.append(os.path.join(os.getcwd(), "src"))
 
 from server.localServer import main
 from global_attributes import G

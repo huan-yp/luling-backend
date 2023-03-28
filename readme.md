@@ -5,18 +5,26 @@
 主要用于 qq 群聊。
 
 ### 配置
+
+#### 配置文件
+
+配置文件名为, `user_settings.yaml`, **需要自行创建.**
+
 将 `user_settings_example.yaml` 复制一份，重命名为 `user_settings.yaml`，并在里面填写自己的配置信息。
 
 AI 本身相关的配置在 `user_settings_example.yaml` 里都有注释，可以参照 `./data/example` 下的文件写。
 
-将 `./src` 写入环境变量 `PYTHONPATH`。
-```
-conda env config vars set PYTHONPATH="./src"
-```
+#### 使用 docker
+
+前端还没写文档, 建议使用该方式.
+
+已经创建了一个整合了前后端的 docker, 安装好了所有依赖. 只需要配置好 `user_settings.yaml` 和 `mirai-console-loader` 相关的内容.
+
+#### 手动配置
 
 安装并配置好 `mysql`。
 
-用一下命令创建一个表：
+用以下命令创建一个表：
 ```
 create table if not exists main(
     `id` int not null auto_increment,
@@ -29,7 +37,12 @@ create table if not exists main(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
+咕咕咕.
+
 ### 使用
 
-建议使用本项目对应的前端，如有需求也可以自行编写前端，可以参考 `./documentation` 中的文档编写前端。 
+本项目默认前端为 `mirai-console` 插件, 请参考 [mirai 项目文档](https://github.com/mamoe/mirai) 使用.
 
+`src/test/localClient.py` 是一个本地命令行前端, 可以用于测试后端是否正确配置.
+
+**强烈建议中国大陆用户配置好代理.**
