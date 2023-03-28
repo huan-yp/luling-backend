@@ -32,6 +32,3 @@
 ### Test
 
 可以使用 `./src/test/localClient.py` 测试后端是否正常工作。
-$$
-
-$$

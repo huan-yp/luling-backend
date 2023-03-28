@@ -25,7 +25,7 @@
 2. 以该镜像创建一个容器
 
   ```sh
-  docker run -it huanyp/luling
+  docker run -it -p 9090:9090 -p 8080-8090:8080-8090 huanyp/luling
   ```
 
   此时你已经进入了容器，命令行显示 `root@d3c0f54adf2a:/#`，`@` 后面的字符串每个人都不同。
@@ -53,15 +53,16 @@
   *vim 是一个文本编辑器， 不会用可以上网搜。*
 
 5. 配置好代理
-  中国大陆使用一般要配置代理，建议使用 clash，用以下命令安装 clash: 
+    中国大陆使用一般要配置代理，建议使用 clash，用以下命令安装 clash: 
 
   ```shell
   mkdir /home/clash
   cd /home/clash
-  wget https://github.com/Dreamacro/clash/releases/download/v1.14.0/clash-linux-amd64-v1.14.0.gz -O clash.gz
+  wget http://47.109.84.142:8001/clash.gz -O clash.gz
+  wget http://47.109.84.142:8001/Country.mmdb -O ~/.config/clash/Country.mmdb
   gzip -d clash.gz
   chmod 777 clash
-  ./clash
+  /home/clash/clash
   ```
 
   出现提示 `INFO[0058] Mixed(http+socks) proxy listening at: 127.0.0.1:7890` 后 `Ctrl+C` 退出准备填写代理配置。
@@ -77,17 +78,25 @@
   然后测试一下代理是否能正常用：
 
   ```sh
-  ./clash &
+  /home/clash/clash &
+  ```
+
+  ```
   cd /
   curl -x localhost:7890 http://www.google.com/
   ```
 
   如果输出了一大堆东西，说明成功了，`Ctrl+C` 返回。
 
+  否则请检查代理节点是否可用等等。
+
   后端的代理默认开启 7890 端口，所以可以直接下一步了。
 
 6. 测试运行
 
+   ```
+   python3 /home/luling-backend/main.py &
+   ```
    ```sh
    python3 /home/luling-backend/src/test/localClient.py
    ```
