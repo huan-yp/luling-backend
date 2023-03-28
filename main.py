@@ -4,6 +4,7 @@ import os
 import sys
 import openai
 
+os.chdir(os.path.dirname(__file__))
 sys.path.append(os.path.join(os.getcwd(), "src"))
 
 from server.localServer import main

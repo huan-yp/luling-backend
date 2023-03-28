@@ -10,14 +10,12 @@ RUN apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata && \
     apt-get install -y mysql-client
 
-# config a root with password 123456
+# config mysql
 RUN systemctl enable mysql && \
     service mysql start && \
-    mysql -e "CREATE USER 'luling'@'%' IDENTIFIED BY '123456'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-
-# create a database and create the table
-RUN service mysql restart && \
-    mysql -u root -p123456 -e "CREATE DATABASE IF NOT EXISTS aimemory; USE aimemory;CREATE TABLE IF NOT EXISTS main(\`id\` int not null auto_increment,\`sender\` varchar(64) not null,\`group\` varchar(64) not null,\`content\` varchar(4096) not null,\`date\` datetime(3),\`reply\` int unsigned default 0,primary key(\`id\`))ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+    mysql -e "CREATE USER 'luling'@'%' IDENTIFIED BY '123456'; GRANT ALL PRIVILEGES ON *.* TO 'luling'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;" && \
+    service mysql restart && \
+    mysql -u luling -p123456 -e "CREATE DATABASE IF NOT EXISTS aimemory; USE aimemory;CREATE TABLE IF NOT EXISTS main(\`id\` int not null auto_increment,\`sender\` varchar(64) not null,\`group\` varchar(64) not null,\`content\` varchar(4096) not null,\`date\` datetime(3),\`reply\` int unsigned default 0,primary key(\`id\`))ENGINE=InnoDB DEFAULT CHARSET=utf8;"
 
 # install python3.8
 RUN apt-get install -y software-properties-common && \
@@ -32,7 +30,8 @@ RUN apt-get install -y openjdk-17-jdk git pip curl openssh-server wget vim
 RUN mkdir /home/luling-backend && \
     cd /home/luling-backend && \
     git clone https://github.com/huan-yp/luling-backend.git /home/luling-backend && \
-    pip install -r /home/luling-backend/requirement.txt
+    pip install -r /home/luling-backend/requirement.txt && \
+    mv "user_settings_example.yaml" "user_settings.yaml"
 
 # install mirai-console and lulingAI plugin
 RUN mkdir /home/luling-frontend && \
