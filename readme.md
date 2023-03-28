@@ -20,6 +20,14 @@ AI 本身相关的配置在 `user_settings_example.yaml` 里都有注释，可�
 
 已经创建了一个整合了前后端的 docker, 安装好了所有依赖. 只需要配置好 `user_settings.yaml` 和 `mirai-console-loader` 相关的内容.
 
+0. [安装 docker](https://zhuanlan.zhihu.com/p/441965046)
+
+1. 从 dockerhub 拉取本项目的 docker image
+`docker pull huanyp/luling`
+
+2. 以该镜像创建一个容器
+`docker run -it huanyp/luling`
+
 #### 手动配置
 
 安装并配置好 `mysql`。
@@ -46,3 +54,4 @@ create table if not exists main(
 `src/test/localClient.py` 是一个本地命令行前端, 可以用于测试后端是否正确配置.
 
 **强烈建议中国大陆用户配置好代理.**
+

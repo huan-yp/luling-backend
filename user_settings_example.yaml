@@ -22,8 +22,8 @@ chatgpt:
 database:
   host: localhost # mysql 服务 IP 地址
   port: 3306 # mysql 服务端口
-  user: root # 登录账户名
-  password: 123456 # 登录密码
+  user: luling # 登录账户名
+  password: "123456" # 登录密码
   database: aimemory # 数据库名
   table: main # 记忆库表名
 proxy:
