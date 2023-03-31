@@ -59,6 +59,7 @@
   mkdir /home/clash
   cd /home/clash
   wget http://47.109.84.142:8001/clash.gz -O clash.gz
+  mkdir ~/.config/clash
   wget http://47.109.84.142:8001/Country.mmdb -O ~/.config/clash/Country.mmdb
   gzip -d clash.gz
   chmod 777 clash
