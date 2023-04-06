@@ -1,18 +1,7 @@
 """使用 Python-socketserver 搭建的微服务
 使用 TCP 协议发送数据, 建议使用 socket 提供的接口
-发送数据和接受数据的格式如下 (JSON 字符串), 使用 utf-8 编码:
-Response:
-{
-    "user":"3051501876"
-    "text":"I'm Luling"
-}
-Request-JSON:
-{
-    "user":"3051561876",
-    "text":"Hello"
-}
-如果 response 的 text 为空, 则表示该请求失败.
 """
+
 import os
 import time
 import socketserver
@@ -24,7 +13,7 @@ from logging import INFO, ERROR
 from json import loads, dumps, load
 
 from server.manager import AccessProcessor, MainProcessor
-from utils.tools import yaml2dict
+from utils.tools import yaml2dict, is_UTF_8
 from language_model.chatgpt_api import ChatGPTConfig, ChatGPTBot
 from constants import C
 from global_attributes import G
@@ -43,10 +32,20 @@ class MyServer(socketserver.BaseRequestHandler):
             return 
         logger.log(INFO, "origin:" + str(data))
         request_dict = loads(data)
-        
         request_chat = Message(request_dict)
-        response = get_response(request_chat)
-        # response.text += "\n----译文仅供参考, 以原文为准----\n" + G.translator.translate(response.text)
+        
+        # 检查消息是否为 utf-8 字符串
+        if is_UTF_8(request_chat.content):
+            response = get_response(request_chat)
+        else:
+            logger.log(INFO, "content is not utf-8")
+            if f"@{G.qq}" in request_chat.content:
+                conn.sendall(dumps({"text":response.content, "user":request_chat.sender}).encode('utf-8'))
+            else:
+                conn.sendall(dumps({"text":"", "user":request_chat.sender}).encode('utf-8'))
+            return 
+        
+        # 根据机器人的回复创建 qq 回复
         if response:
             logger.log(INFO, "response_overview:" + str(response))
             logger.log(INFO, "response_content:\n" + response.content)
