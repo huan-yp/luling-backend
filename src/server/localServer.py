@@ -35,15 +35,15 @@ class MyServer(socketserver.BaseRequestHandler):
         request_chat = Message(request_dict)
         
         # 检查消息是否为 utf-8 字符串
-        if is_UTF_8(request_chat.content):
-            response = get_response(request_chat)
-        else:
-            logger.log(INFO, "content is not utf-8")
-            if f"@{G.qq}" in request_chat.content:
-                conn.sendall(dumps({"text":response.content, "user":request_chat.sender}).encode('utf-8'))
-            else:
-                conn.sendall(dumps({"text":"", "user":request_chat.sender}).encode('utf-8'))
-            return 
+        # if is_UTF_8(request_chat.content):
+        response = get_response(request_chat)
+        # else:
+        #     logger.log(INFO, "content is not utf-8")
+        #     if f"@{G.qq}" in request_chat.content:
+        #         conn.sendall(dumps({"text":"喵喵, 暂时还无法处理非 utf-8 字符喵\n检查下你的 qq 昵称或者消息内容是不是包含了非 unicode 字符喵~", "user":request_chat.sender}).encode('utf-8'))
+        #     else:
+        #         conn.sendall(dumps({"text":"", "user":request_chat.sender}).encode('utf-8'))
+        #     return 
         
         # 根据机器人的回复创建 qq 回复
         if response:
