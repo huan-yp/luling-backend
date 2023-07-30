@@ -33,7 +33,7 @@
 3. 拉取最新版本的后端
 
   ```
-  cd /home/luling-backend/ && git pull && cd /
+  cd /home/luling-backend/ && git pull && cp user_settings_example.yaml user_settings.yaml && cd /
   ```
 
 4. 进入容器测试一下有没有问题，然后配置好 `user_settings.yaml`
@@ -53,14 +53,15 @@
   *vim 是一个文本编辑器， 不会用可以上网搜。*
 
 5. 配置好代理
-    中国大陆使用一般要配置代理，建议使用 clash，用以下命令安装 clash: 
+    中国大陆使用一般要配置代理，建议使用 clash，用以下命令安装 clash:
+    该服务器是作者的服务器，随时可能放弃支持，如果无法使用请自行解决安装问题
 
   ```shell
   mkdir /home/clash
   cd /home/clash
-  wget http://47.109.84.142:8001/clash.gz -O clash.gz
+  wget http://47.109.84.142:8003/clash.gz -O clash.gz
   mkdir ~/.config/clash
-  wget http://47.109.84.142:8001/Country.mmdb -O ~/.config/clash/Country.mmdb
+  wget http://47.109.84.142:8003/Country.mmdb -O ~/.config/clash/Country.mmdb
   gzip -d clash.gz
   chmod 777 clash
   /home/clash/clash
