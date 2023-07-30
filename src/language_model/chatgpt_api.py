@@ -1,10 +1,11 @@
-import openai
 import os
 import tiktoken
+import json
 import traceback
 import time
 import copy
 import datetime
+import requests
 
 from logging import INFO, WARNING, ERROR, DEBUG
 from language_model.general import Bot, RequestError
@@ -62,7 +63,7 @@ class ChatGPTConfig():
         self.__dict__.update(chatgpt_config)
     
     def load(self):
-        openai.api_key = self.api_key
+        # openai.api_key = self.api_key
         self.preset_message = yaml2dict(self.preset_message_path)
         self.preset_message = repharse_message(self.preset_message)
 
@@ -104,14 +105,19 @@ class ChatGPTBot(Bot):
                 timeout = G.chatgpt_config.timeout
             else:
                 timeout = G.chatgpt_config.retry_timeout
-            response = openai.ChatCompletion.create(
-                model=G.chatgpt_config.model,
-                messages=messages,
-                max_tokens=max_tokens,
-                temperature=t,
-                timeout=timeout,
-                request_timeout=timeout,
-            )
+            url = G.chatgpt_config.mirror_url
+            api_key = G.chatgpt_config.api_key
+
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            }
+            data = {
+                "model": G.chatgpt_config.model,
+                "stream": False,
+                "messages": messages
+            }
+            response = requests.post(url, headers=headers, data=json.dumps(data))
             logger.debug("response time:" + str(time.time() - start_time))
             logger.debug(response)
         except BaseException as e:
