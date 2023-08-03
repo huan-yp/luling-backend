@@ -86,6 +86,23 @@ class ChatGPTBot(Bot):
     def get_temperature(self, message:Message):
         return G.chatgpt_config.temperature
     
+    def _request(url, api_key, proxy, message, model):
+        proxies = {
+            "http": proxy,
+            "https": proxy,
+        }
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "model": model,
+            "stream": False,
+            "messages": message
+        }
+        response = requests.post(url, headers=headers, data=json.dumps(data), proxies=proxies)
+        return response
+    
     def request(self, messages, t, max_tokens, retry=True):
         """向 api.openai.com 请求
         Args:
@@ -105,19 +122,7 @@ class ChatGPTBot(Bot):
                 timeout = G.chatgpt_config.timeout
             else:
                 timeout = G.chatgpt_config.retry_timeout
-            url = G.chatgpt_config.mirror_url
-            api_key = G.chatgpt_config.api_key
-
-            headers = {
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json"
-            }
-            data = {
-                "model": G.chatgpt_config.model,
-                "stream": False,
-                "messages": messages
-            }
-            response = requests.post(url, headers=headers, data=json.dumps(data))
+            response = self._request(G.chatgpt_config.api_key, G.proxy, messages, G.chatgpt_config.model)
             logger.debug("response time:" + str(time.time() - start_time))
             logger.debug(response)
         except BaseException as e:

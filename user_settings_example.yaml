@@ -19,7 +19,7 @@ chatgpt:
   timeout: 15 # 超时限制
   retry_timeout: 50 # 重试超时限制
   preset_message_path: ./data/example/message_template.yaml # 预设消息路径
-  mirror_url: https://api.ohmygpt.com/v1/ # 镜像站 api url 
+  mirror_url: # 镜像站/主站 api url, 必填 
 database:
   host: localhost # mysql 服务 IP 地址
   port: 3306 # mysql 服务端口
