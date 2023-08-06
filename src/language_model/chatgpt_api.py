@@ -100,8 +100,10 @@ class ChatGPTBot(Bot):
             "stream": False,
             "messages": message
         }
-        response = requests.post(url, headers=headers, data=json.dumps(data), proxies=proxies)
-        return response
+        if proxy is not None:
+            return requests.post(url, headers=headers, data=json.dumps(data), proxies=proxies)
+        else:
+            return requests.post(url, headers=headers, data=json.dumps(data))
     
     def request(self, messages, t, max_tokens, retry=True):
         """向 api.openai.com 请求

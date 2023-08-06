@@ -26,8 +26,9 @@ def config_env():
     load_config(C.CONFIG_PATH)
     proxy = G.config['proxy']
     if(proxy['enable']):
-        os.environ['http_proxy'] = f"{proxy['host']}:{proxy['port']}"
-        os.environ['https_proxy'] = f"{proxy['host']}:{proxy['port']}"  
+        G.proxy = f"{G.config['proxy']['host']}:{G.config['proxy']['port']}"
+        # os.environ['http_proxy'] = f"{proxy['host']}:{proxy['port']}"
+        # os.environ['https_proxy'] = f"{proxy['host']}:{proxy['port']}"  
  
     
 if __name__ == '__main__':

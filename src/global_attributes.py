@@ -22,6 +22,7 @@ class GlobalAttr():
     port = 0 # 后端端口
     SERVER_DEBUG = False # 是否是调试模式
     PREFIX_NAME = True # 是否添加前缀
+    proxy = None
     
     def __init__(self) -> None:
         pass
