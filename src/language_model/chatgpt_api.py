@@ -124,7 +124,7 @@ class ChatGPTBot(Bot):
                 timeout = G.chatgpt_config.timeout
             else:
                 timeout = G.chatgpt_config.retry_timeout
-            response = self._request(G.chatgpt_config.api_key, G.proxy, messages, G.chatgpt_config.model)
+            response = self._request(G.chatgpt_config.mirror_url, G.chatgpt_config.api_key, G.proxy, messages, G.chatgpt_config.model)
             logger.debug("response time:" + str(time.time() - start_time))
             logger.debug(response)
         except BaseException as e:
