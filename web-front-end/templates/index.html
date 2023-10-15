@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <form method="POST">
+            <input type="text" name="user_id" placeholder="Your id"/>
+            <input type="text" name="user_text" placeholder="Enter your message"/>
+            <input type="submit" value="Send"/>
+        </form>
+        {% if ai_response %}
+            <p>AI: {{ ai_response }}</p>
+        {% endif %}
+    </body>
+</html>
